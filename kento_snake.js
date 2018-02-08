@@ -1,11 +1,9 @@
-//Snake Game AI 
-
 //Grid dimension 
 const height = 10;
 const width = height;
 
-//CellObject: [0] = cell, [1] = Snake, [2] = Apple
-const cellObject = ['_','S','A'] 
+//CellObjects
+const cellObject = {snake:'S', apple:'A', cell:'_'};
 let cell = [];
 
 //y and x coordinates for the snake (y,x)
@@ -22,12 +20,12 @@ function randomCoord() {
 }
 
 //function for generating game grid .
-//N.B. the first for-loop pushes an empty array into the existing "cell" array, and the cell object is then pushed into that array.
+//N.B. the first for-loop pushes an empty array into the existing "cell" array, and the cellSym is then pushed into that array.
 function printGrid() {
 	for(let i=0;i<width;i++){
 		cell[i]=[];
 		for(j=0;j<width;j++){
-			cell[i][j]=cellObject[0];
+			cell[i][j]=cellObject.cell;
 		}
 	}
 	return cell;
@@ -35,14 +33,14 @@ function printGrid() {
 
 //Prints apple in random position
 function printApple() { 
-	cell[appleCoord[0]][appleCoord[1]] = cellObject[2];
+	cell[appleCoord[0]][appleCoord[1]] = cellObject.apple;
 	console.log("apple coord (y, x): " + appleCoord[0].toString() + ", " + appleCoord[1].toString());
 	return cell;
 }
 
 //Prints snake in random position
 function printSnake() {
-	cell[snakeCoord[0]][snakeCoord[1]] = cellObject[1];
+	cell[snakeCoord[0]][snakeCoord[1]] = cellObject.snake;
 	console.log("snake coord (y, x): " + snakeCoord[0].toString() + ", " + snakeCoord[1].toString());
 	document.write('<br>' + '<br>' + cell.join('<br>'))
 	return cell;
