@@ -1,3 +1,5 @@
+//Snake Game AI 
+
 //Grid dimension 
 const height = 10;
 const width = height;
