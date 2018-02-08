@@ -22,7 +22,7 @@ function randomCoord() {
 }
 
 //function for generating game grid .
-//N.B. the first for-loop pushes an empty array into the existing "cell" array, and the cellSym is then pushed into that array.
+//N.B. the first for-loop pushes an empty array into the existing "cell" array, and the cell object is then pushed into that array.
 function printGrid() {
 	for(let i=0;i<width;i++){
 		cell[i]=[];
