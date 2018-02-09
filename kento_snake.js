@@ -12,7 +12,7 @@ let snakeCoord = [randomCoord(), randomCoord()]
 let appleCoord = [randomCoord(), randomCoord()]
 
 //Prompt to initialize the game. 
-let startPrompt = prompt('Type "go" to begin snake').toLowerCase();
+const startPrompt = prompt('Type "go" to begin snake').toLowerCase();
 
 let score = 0
 
