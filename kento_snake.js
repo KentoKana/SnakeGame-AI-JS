@@ -4,7 +4,6 @@ const width = height;
 
 //CellObjects
 const cellObject = {snake:'S', snakeBody: '0', apple:'A', cell:'_'};
-let cell = [];
 
 //y and x coordinates for the snake (y,x)
 let snakeCoord = [randomCoord(), randomCoord()]
@@ -44,25 +43,41 @@ function randomCoord() {
 //function for generating game grid .
 //N.B. the first for-loop pushes an empty array into the existing "cell" array, and the cellSym is then pushed into that array.
 function makeGrid() {
+	let grid = [];
 	for(let i=0;i<width;i++)  {
-		cell[i]=[];
-		for(j=0;j<width;j++){
-			cell[i][j] = {x: i, y: j, snake: false, apple: false};
-		} if(cell[i][j].snake === false && cell[i][j].apple === false){
-			cell[i][j] = cellObject.cell;
+		grid[i]=[];
+		for(let j=0;j<width;j++){
+			grid[i][j] = {x: i, y: j, snake: false, apple: false};
 		}
-
 	}
-	return cell;
+	return grid;
 }
 
-makeGrid();
+function gridPrinter(some_grid){
+	let grid = [];
+	for(let i=0;i<width;i++){
+		grid[i] = [];
+		for(let j=0;j<width;j++){
+			if (some_grid[i][j].snake === true) {
+				grid[i][j] = cellObject.snake;
+			} else if (some_grid[i][j].apple === true) {
+				grid[i][j] = cellObject.apple;
+			} else {
+				grid[i][j] = cellObject.cell
+			}
+		}
+	}
+	return grid
+}
 
-// var grid = makeGrid();
-// grid[0][0]
-// // {x: 0, y: 0, snake: false, apple: false}
 
-// grid[0][0] = {x: 0, y: 0, snake: true, apple: false}
+var grid = makeGrid();
+grid[0][3].snake = true // Just a test to see if it actually updates the grid that is to be printed.
+console.log(grid)
+console.log(gridPrinter(grid))
+
+
+
 
 // //Places apple in random position
 // function placeApple() { 
