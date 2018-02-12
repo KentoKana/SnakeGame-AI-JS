@@ -72,7 +72,7 @@ function gridPrinter(some_grid){
 
 
 var grid = makeGrid();
-grid[0][3].snake = true
+grid[0][3].snake = true // Just a test to see if it actually updates the grid that is to be printed.
 console.log(grid)
 console.log(gridPrinter(grid))
 
