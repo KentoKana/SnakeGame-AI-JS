@@ -18,7 +18,7 @@ function makeGridObject() {
 	return grid;
 }
 
-var createGridObject = makeGridObject()
+var gridObject = makeGridObject()
 
 //Creates game grid. 
 function makeGrid(someGrid){
@@ -38,7 +38,7 @@ function makeGrid(someGrid){
 	return array;
 }
 
-var gameState = makeGrid(createGridObject);
+var gameState = makeGrid(gridObject);
 
 console.log(gameState);
 
