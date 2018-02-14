@@ -8,11 +8,6 @@ const cellState = {snakeHead: 'S', snakeBody: '0', apple: 'A', cell: '_'  }
 var gridObject;
 var gameState;
 
-var findSnake;
-var findApple;
-
-
-
 
 //Creates an array of objects for the grid. Object will hold the x and y value, as well as Boolean values for snake and apple.
 function makeGridObject() {
@@ -46,8 +41,8 @@ function makeGrid(someGrid){
 	return array;
 }
 
-gridObject[3][5].apple = true;
-gridObject[3][4].snake = true;
+gridObject[0][0].apple = true;
+gridObject[9][9].snake = true;
 
 gameState = makeGrid(gridObject);
 
@@ -67,8 +62,10 @@ function lookForSnake(grid){
 	return snakeCoord;
 }
 
-findSnake = lookForSnake(gridObject);
+var findSnake = lookForSnake(gridObject);
 
+
+//Returns apple coordinate in the form [x, y]
 function lookForApple(grid){
 	for(i=0;i<width;i++){
 		for(j=0;j<width;j++){
@@ -82,5 +79,55 @@ function lookForApple(grid){
 	return appleCoord;
 }
 
-findApple = lookForApple(gridObject);
+var findApple = lookForApple(gridObject);
+
+console.log(findSnake);
+
+
+//moves snake towards goal. from arg is the snake head position, and to arg is the goal (e.g. apple)
+function step(from, to){
+	while(true) {
+		if(from[0] < to[0]){
+			clearPos(gameState, findSnake[0], findSnake[1])
+			from[0] += 1;
+			addToGrid(gameState, findSnake[0], findSnake[1], cellState.snakeHead)
+			console.log(findSnake);
+			printNewGameState();
+		} else if(from[0] > to[0]){
+			clearPos(gameState, findSnake[0], findSnake[1])
+			from[0] -= 1; 
+			addToGrid(gameState, findSnake[0], findSnake[1], cellState.snakeHead)
+			console.log(findSnake);
+			printNewGameState();
+		} else if(from[1] < to[1]){
+			clearPos(gameState, findSnake[0], findSnake[1])
+			from[1] += 1;
+			addToGrid(gameState, findSnake[0], findSnake[1], cellState.snakeHead)
+			console.log(findSnake);
+			printNewGameState();
+		} else if(from[1] > to[1]){
+			clearPos(gameState, findSnake[0], findSnake[1])
+			from[1] -= 1;
+			addToGrid(gameState, findSnake[0], findSnake[1], cellState.snakeHead)
+			console.log(findSnake);
+			printNewGameState();
+		} else{
+			break;
+		}
+	}
+}
+
+step(findSnake, findApple);
+
+function printNewGameState(){
+	document.write('<br>' + '<br>' + gameState.join('<br>'))
+}
+
+function addToGrid(grid, x, y, cell){
+	grid[y][x] = cell
+}
+
+function clearPos(grid, x, y){
+	addToGrid(grid, x, y, cellState.cell);
+}
 
