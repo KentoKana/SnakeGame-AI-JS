@@ -5,12 +5,9 @@ const width = height;
 //All the states that a cell can hold.
 const cellState = {snakeHead: 'S', snakeBody: '0', apple: 'A', cell: '_'  }
 
-var gridObject;
-var gameState;
-
 
 //Creates an array of objects for the grid. Object will hold the x and y value, as well as Boolean values for snake and apple.
-function makeGridObject() {
+function makeBackendGrid() {
 	let grid = [];
 	for(i=0;i<width;i++){
 		grid[i] = []
@@ -21,10 +18,10 @@ function makeGridObject() {
 	return grid;
 }
 
-gridObject = makeGridObject()
+var backendGrid = makeBackendGrid()
 
 //Creates game grid. 
-function makeGrid(someGrid){
+function makeFrontendGrid(someGrid){
 	let array = []
 	for(i=0;i<width;i++){
 		array[i] = [];
@@ -41,93 +38,88 @@ function makeGrid(someGrid){
 	return array;
 }
 
-gridObject[0][0].apple = true;
-gridObject[9][9].snake = true;
 
-gameState = makeGrid(gridObject);
+frontendGrid = makeFrontendGrid(backendGrid);
 
-document.write('<br>' + '<br>' + gameState.join('<br>'))
+document.write('<br>' + '<br>' + frontendGrid.join('<br>'))
 
 //Returns snake coordinate in the form [x, y]
 function lookForSnake(grid){
 	for(i=0;i<width;i++){
 		for(j=0;j<width;j++){
 			if(grid[i][j].snake === true){
-				var snekHeadCoordX = (grid[i][j].x);
-				var snekHeadCoordY= (grid[i][j].y);
+				var snakeCoord = [grid[i][j].x, grid[i][j].y];
 			}
 		}
 	}
-	var snakeCoord = [snekHeadCoordX, snekHeadCoordY];
 	return snakeCoord;
 }
 
-var findSnake = lookForSnake(gridObject);
-
+backendGrid[9][9].snake = true;
+var findSnake = lookForSnake(backendGrid)
 
 //Returns apple coordinate in the form [x, y]
 function lookForApple(grid){
 	for(i=0;i<width;i++){
 		for(j=0;j<width;j++){
 			if(grid[i][j].apple === true){
-				var appleCoordX = (grid[i][j].x);
-				var appleCoordY = (grid[i][j].y);
+				var appleCoord = [grid[i][j].x, grid[i][j].y];
 			}
 		}
 	}
-	var appleCoord = [appleCoordX, appleCoordY];
 	return appleCoord;
 }
 
-var findApple = lookForApple(gridObject);
-
-console.log(findSnake);
-
-
-//moves snake towards goal. from arg is the snake head position, and to arg is the goal (e.g. apple)
-function step(from, to){
-	while(true) {
-		if(from[0] < to[0]){
-			clearPos(gameState, findSnake[0], findSnake[1])
-			from[0] += 1;
-			addToGrid(gameState, findSnake[0], findSnake[1], cellState.snakeHead)
-			console.log(findSnake);
-			printNewGameState();
-		} else if(from[0] > to[0]){
-			clearPos(gameState, findSnake[0], findSnake[1])
-			from[0] -= 1; 
-			addToGrid(gameState, findSnake[0], findSnake[1], cellState.snakeHead)
-			console.log(findSnake);
-			printNewGameState();
-		} else if(from[1] < to[1]){
-			clearPos(gameState, findSnake[0], findSnake[1])
-			from[1] += 1;
-			addToGrid(gameState, findSnake[0], findSnake[1], cellState.snakeHead)
-			console.log(findSnake);
-			printNewGameState();
-		} else if(from[1] > to[1]){
-			clearPos(gameState, findSnake[0], findSnake[1])
-			from[1] -= 1;
-			addToGrid(gameState, findSnake[0], findSnake[1], cellState.snakeHead)
-			console.log(findSnake);
-			printNewGameState();
-		} else{
-			break;
-		}
-	}
-}
-
-step(findSnake, findApple);
+backendGrid[0][0].apple = true;
+var findApple = lookForApple(backendGrid);
 
 function printNewGameState(){
-	document.write('<br>' + '<br>' + gameState.join('<br>'))
+	return document.write('<br>' + '<br>' + frontendGrid.join('<br>'))
 }
 
-function addToGrid(grid, x, y, cell){
-	grid[y][x] = cell
+function addToGrid(grid, xcoord, ycoord, obj, status){
+	return grid[xcoord][ycoord][obj] = status
 }
 
-function clearPos(grid, x, y){
-	addToGrid(grid, x, y, cellState.cell);
+//moves snake towards goal. from arg is the snake head position, and to arg is the goal (e.g. apple)
+function move(from, to){
+
+	var dy = from[1] - to[1];
+	var dx = from[0] - to[0];
+
+	if(dy > 0){
+		from[1] -= 1;
+	} else if(dy < 0){
+		from[1] += 1;
+	} else if(dx > 0){
+		from[0] -= 1;
+	} else if(dx < 0){
+		from[0] += 1;
+	}
+	return [from[0], from[1]]
+
 }
 
+
+//check to see if snake has the same coordinate as goal (e.g. apple)
+function arraysEqual(arr1, arr2) {
+	for(var i = arr1.length; i--;) {
+		if(arr1[i] !== arr2[i]) {
+			return false;
+		} 
+	}
+	return true;
+}
+
+
+function runGame(){
+	do {
+		console.log(makeFrontendGrid(backendGrid))
+		addToGrid(backendGrid, findSnake[0], findSnake[1], 'snake', false);
+		findSnake = move(findSnake, findApple);
+		addToGrid(backendGrid, findSnake[0], findSnake[1], 'snake', true);
+		console.log(makeFrontendGrid(backendGrid));
+	} while(arraysEqual(findSnake, findApple) === false);
+}
+
+runGame();
